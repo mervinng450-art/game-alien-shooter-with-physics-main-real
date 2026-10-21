@@ -1,0 +1,361 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #0d0f18;
+    font-family: 'Courier New', Courier, monospace;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#game-container {
+    position: relative;
+    width: 800px;
+    height: 600px;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+    border: 4px solid #1a233a;
+    background-color: #000000;
+}
+
+#gameCanvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #05050a;
+}
+
+/* Pastikan #ui-layer mencakup seluruh area game container */
+#ui-layer, .ui-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* Auth Card Overlay */
+.auth-card {
+    pointer-events: auto;
+    background: rgba(13, 17, 31, 0.95);
+    border: 2px solid #1f2a48;
+    border-radius: 12px;
+    padding: 32px 28px;
+    width: 380px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 255, 204, 0.15);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    
+    /* PERBAIKAN: Memaksa elemen tepat ke tengah layar */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
+
+.auth-card h2 {
+    color: #ffffff;
+    font-size: 22px;
+    letter-spacing: 2px;
+    margin-bottom: 2px;
+}
+
+.auth-subtitle {
+    color: #7b88a8;
+    font-size: 11px;
+    margin-bottom: 8px;
+}
+
+.auth-field {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: 6px;
+}
+
+.auth-field label {
+    font-size: 10px;
+    color: #6b7a99;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.auth-input {
+    background: #141a2e;
+    border: 1px solid #233054;
+    border-radius: 6px;
+    padding: 10px 12px;
+    color: #00FFCC;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.auth-input:focus {
+    border-color: #00FFCC;
+}
+
+.auth-btn {
+    background: #3b82f6;
+    color: #ffffff;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 6px;
+}
+
+.auth-btn:hover {
+    background: #2563eb;
+}
+
+.auth-btn:active {
+    transform: scale(0.98);
+}
+
+.auth-switch {
+    font-size: 11px;
+    color: #7b88a8;
+    margin-top: 4px;
+}
+
+.auth-switch a {
+    color: #3b82f6;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.auth-switch a:hover {
+    text-decoration: underline;
+}
+
+.auth-error {
+    color: #ff4d4d;
+    font-size: 11px;
+    background: rgba(255, 77, 77, 0.1);
+    border: 1px solid rgba(255, 77, 77, 0.3);
+    padding: 8px;
+    border-radius: 4px;
+    display: none;
+}
+
+.auth-btn-guest {
+    background: transparent;
+    color: #00FFCC;
+    border: 1px solid #00FFCC;
+    padding: 10px;
+    border-radius: 6px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 4px;
+}
+
+.auth-btn-guest:hover {
+    background: rgba(0, 255, 204, 0.15);
+    color: #ffffff;
+}
+
+/* Physics Question Modal Styles */
+.modal-overlay {
+    pointer-events: auto;
+    background: rgba(10, 15, 30, 0.95);
+    border: 2px solid #00FFCC;
+    border-radius: 8px;
+    padding: 24px;
+    width: 500px;
+    max-width: 90%;
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+    
+    /* PERBAIKAN: Memaksa elemen tepat ke tengah layar */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
+
+.modal-overlay h2 {
+    color: #00FFCC;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.modal-overlay .question-text {
+    font-size: 16px;
+    line-height: 1.4;
+    color: #E0E0E0;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 12px;
+    border-radius: 4px;
+    border-left: 3px solid #00FFCC;
+    text-align: left;
+}
+
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.option-btn {
+    background: #1a233a;
+    color: #FFFFFF;
+    border: 1px solid #00FFCC;
+    padding: 10px 16px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.option-btn:hover {
+    background: #00FFCC;
+    color: #000000;
+}
+
+.feedback-container {
+    font-size: 14px;
+    line-height: 1.3;
+    padding: 10px;
+    border-radius: 4px;
+    display: none;
+}
+
+.feedback-container.correct {
+    display: block;
+    background: rgba(0, 255, 102, 0.2);
+    border: 1px solid #00FF66;
+    color: #00FF66;
+}
+
+.feedback-container.incorrect {
+    display: block;
+    background: rgba(255, 51, 51, 0.2);
+    border: 1px solid #FF3333;
+    color: #FF6666;
+}
+
+.modal-btn {
+    background: #00FFCC;
+    color: #000000;
+    border: none;
+    padding: 10px 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    align-self: center;
+    margin-top: 8px;
+}
+
+.modal-btn:hover {
+    background: #ffffff;
+}
+
+/* Main Menu / Home Page Styling */
+.main-menu-card {
+    pointer-events: auto;
+    background: rgba(10, 15, 30, 0.95);
+    border: 2px solid #00FFCC;
+    box-shadow: 0 0 25px rgba(0, 255, 204, 0.3);
+    border-radius: 12px;
+    padding: 30px;
+    width: 320px;
+    text-align: center;
+    backdrop-filter: blur(8px);
+    
+    /* PERBAIKAN: Memaksa elemen tepat ke tengah layar */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
+
+.menu-title {
+    color: #00FFCC;
+    font-size: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+    letter-spacing: 2px;
+}
+
+.menu-btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.menu-btn {
+    background: linear-gradient(135deg, #00FFCC, #0088FF);
+    color: #05050a;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.menu-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.6);
+}
+
+.menu-btn-secondary {
+    background: transparent;
+    color: #00FFCC;
+    border: 1px solid #00FFCC;
+}
+
+.menu-btn-secondary:hover {
+    background: rgba(0, 255, 204, 0.15);
+    color: #ffffff;
+}
+
+.menu-btn-logout {
+    background: transparent;
+    color: #FF4444;
+    border: 1px solid #FF4444;
+    margin-top: 6px;
+}
+
+.menu-btn-logout:hover {
+    background: rgba(255, 68, 68, 0.2);
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+}
